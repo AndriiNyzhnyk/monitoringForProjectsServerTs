@@ -1,32 +1,11 @@
 'use strict';
 
-import { Server, Request, ResponseToolkit } from "@hapi/hapi";
+import { launch } from './server';
 
-
-const init = async () => {
-
-    const server: Server = new Server({
-        port: 3000,
-        host: 'localhost'
+launch()
+    .then( (server) => {
+        console.log(`Server up and running at: ${server.info.uri}`);
+    })
+    .catch((err) => {
+        console.error(err);
     });
-
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: (request: Request, h: ResponseToolkit) => {
-
-            return 'Hello World!';
-        }
-    });
-
-    await server.start();
-    console.log('Server running on %s', server.info.uri);
-};
-
-process.on('unhandledRejection', (err) => {
-
-    console.log(err);
-    process.exit(1);
-});
-
-init();
