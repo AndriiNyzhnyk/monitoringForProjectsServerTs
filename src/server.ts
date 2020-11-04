@@ -9,9 +9,12 @@ import { Server, Request, ResponseToolkit } from "@hapi/hapi";
 import AMQP from "./modules/amqp";
 
 
+// Get process environments
+const { HTTP_PORT, HTTP_HOST } = process.env;
+
 const server: Server = new Server({
-    port: 3000,
-    host: 'localhost'
+    port: HTTP_PORT,
+    host: HTTP_HOST
 });
 
 server.route({
