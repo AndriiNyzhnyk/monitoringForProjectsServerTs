@@ -1,6 +1,9 @@
 'use strict';
 
 import { Server, Request, ResponseToolkit } from "@hapi/hapi";
+import AMQP from "./modules/amqp";
+
+// import * as AMQP from './modules/amqp';
 
 
 const server: Server = new Server({
@@ -20,12 +23,14 @@ server.route({
 export async function init() {
 
     await server.initialize();
+    await AMQP.getInstance();
     return server;
 }
 
 export async function launch() {
 
     await server.start();
+    await AMQP.getInstance();
     return server;
 }
 
