@@ -1,9 +1,12 @@
 'use strict';
 
+import * as Path from 'path';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: Path.resolve(__dirname, '../.env') });
+
+
 import { Server, Request, ResponseToolkit } from "@hapi/hapi";
 import AMQP from "./modules/amqp";
-
-// import * as AMQP from './modules/amqp';
 
 
 const server: Server = new Server({
