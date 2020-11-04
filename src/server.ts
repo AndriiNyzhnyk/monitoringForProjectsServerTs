@@ -26,17 +26,21 @@ server.route({
     }
 });
 
+async function setup() {
+    await AMQP.getInstance();
+}
+
 export async function init() {
 
     await server.initialize();
-    await AMQP.getInstance();
+    await setup();
     return server;
 }
 
 export async function launch() {
 
     await server.start();
-    await AMQP.getInstance();
+    await setup();
     return server;
 }
 
