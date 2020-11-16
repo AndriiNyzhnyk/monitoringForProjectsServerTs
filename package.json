@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node_modules/typescript/bin/tsc && node ./dist/index.js",
-    "compile": "node_modules/typescript/bin/tsc"
+    "compile": "node_modules/typescript/bin/tsc",
+    "check": "node_modules/typescript/bin/tsc -w"
   },
   "author": "Andrii Nyzhnyk",
   "license": "ISC",
