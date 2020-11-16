@@ -1,19 +1,17 @@
 'use strict';
 
-// const Monitoring = require('../monitoring');
-
-// import * as Amqplib from 'amqplib';
-import * as Amqplib from 'amqplib';
+import { Connection, Channel, connect } from 'amqplib';
 
 // Get process environments
 const { AMQP_URL } = process.env;
 
 export default class AMQP {
     public static instance: object | undefined;
-    connection: object;
-    channel: object;
-    queue: object;
+    private static targetQueue = 'monitoring';
 
+    connection: Connection;
+    channel: Channel;
+    queue: object;
 
     static async getInstance() {
         if (typeof AMQP.instance === 'undefined') {
@@ -25,13 +23,12 @@ export default class AMQP {
     }
 
     static async _initializeConnection() {
-        const targetQueue = 'monitoring';
-        const connection: Amqplib.Connection = await Amqplib.connect(AMQP_URL);
-        const channel = await connection.createChannel();
-        const queue = await channel.assertQueue(targetQueue);
+        const connection: Connection = await connect(AMQP_URL);
+        const channel: Channel = await connection.createChannel();
+        const queue = await channel.assertQueue(this.targetQueue);
 
         console.log('Connection to AMQP server was successful');
-        return { connection, channel, queue, targetQueue };
+        return { connection, channel, queue, targetQueue: this.targetQueue };
     }
 
     constructor({ connection, channel, queue, targetQueue }) {
@@ -46,7 +43,8 @@ export default class AMQP {
 
         channel.consume(targetQueue, (msg) => {
             if (msg !== null) {
-                // Monitoring.handleNewMessage(msg.content.toString());
+
+                console.log(JSON.parse(msg.content));
                 channel.ack(msg);
             }
         });
